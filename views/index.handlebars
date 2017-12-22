@@ -1,0 +1,84 @@
+<h1>My Burger List!</h1>
+
+<h2>Burgers I'll Eat</h2>
+
+<ul>
+  {{#each burger}}
+    {{#unless this.devoured}}
+      <li>{{this.burger_name}}
+        <button class="eat-burger" data-id="{{this.id}}">
+          Devour it!
+        </button>
+      </li>
+    {{/unless}}
+  {{/each}}
+</ul>
+
+<h2>I already ate these:</h2>
+
+<ul>
+  {{#each burger}}
+    {{#if this.devoured}}
+      <li>{{this.burger_name}}</li>
+    {{/if}}
+  {{/each}}
+</ul>
+
+<h2>Add a Burger</h2>
+<form class="create-form">
+
+  <div class="form-group">
+    <label for="burg">Burger Name:</label>
+    <input type="text" id="burg" name="name">
+  </div>
+
+  <button type="submit">Add Burger</button>
+</form>
+
+
+<script>
+  // Make sure we wait to attach our handlers until the DOM is fully loaded.
+  $(function() {
+    $(".eat-burger").on("click", function(event) {
+      var id = $(this).data("id");
+
+      var newDevouredState = {
+        devoured: true
+      };
+
+      // Send the PUT request.
+      $.ajax("/api/burgers/" + id, {
+        type: "PUT",
+        data: newDevouredState
+      }).then(
+        function() {
+          console.log("changed devoured to true");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+    });
+
+    $(".create-form").on("submit", function(event) {
+      // Make sure to preventDefault on a submit event.
+      event.preventDefault();
+
+      var newBurger = {
+        name: $("#burg").val().trim(),
+        devoured: false
+      };
+
+      // Send the POST request.
+      $.ajax("/api/burgers", {
+        type: "POST",
+        data: newBurger
+      }).then(
+        function() {
+          console.log("created new burger");
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+    });
+  });
+</script>
