@@ -1,40 +1,49 @@
 <h1>My Burger List!</h1>
 
-<h2>Burgers I'll Eat</h2>
+<div class="row"> {{!-- Begin Add Burger Question --}}
+  <div class="col-12"  id="question">
+    <h3>What other burger do you want to try?</h3>
+    <form class="create-form">
 
-<ul>
-  {{#each burger}}
-    {{#unless this.devoured}}
-      <li>{{this.burger_name}}
-        <button class="eat-burger" data-id="{{this.id}}">
-          Devour it!
-        </button>
-      </li>
-    {{/unless}}
-  {{/each}}
-</ul>
+      <div class="input-group col-lg-6 col-md-8 offset-lg-3 offset-md-2">
+        <input type="text" class="form-control" id="burg" name="name" placeholder="Ex: 'Jalapeno Burger'">
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="submit">Add Burger!</button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div> {{!-- End Add Burger Question --}}
 
-<h2>I already ate these:</h2>
 
-<ul>
-  {{#each burger}}
-    {{#if this.devoured}}
-      <li>{{this.burger_name}}</li>
-    {{/if}}
-  {{/each}}
-</ul>
-
-<h2>Add a Burger</h2>
-<form class="create-form">
-
-  <div class="form-group">
-    <label for="burg">Burger Name:</label>
-    <input type="text" id="burg" name="name">
+<div class="row" id="lists"> {{!-- Starting lists --}}
+  <div class="col-md-6 col-sm-12">
+    <h2>#BurgerGoals</h2>
+    <ul>
+      {{#each burger}}
+        {{#unless this.devoured}}
+          <li>
+            <button class="eat-burger btn btn-danger" data-id="{{this.id}}">
+              Devour! >>
+            </button>
+            {{this.burger_name}}
+          </li>
+        {{/unless}}
+      {{/each}}
+    </ul>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <h2>#Conquered:</h2>
+    <ul>
+      {{#each burger}}
+        {{#if this.devoured}}
+          <li>{{this.burger_name}}</li>
+        {{/if}}
+      {{/each}}
+    </ul>
   </div>
 
-  <button type="submit">Add Burger</button>
-</form>
-
+</div>{{!-- Ending lists --}}
 
 <script>
   // Make sure we wait to attach our handlers until the DOM is fully loaded.
